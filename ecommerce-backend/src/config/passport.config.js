@@ -20,7 +20,7 @@ passport.use('jwt',
         },
         async (jwtPayload, done) => {
             try {
-                // Podés cargar user desde DB si querés datos frescos:
+                // Cargar datos de DB
                 const user = await UserModel.findById(jwtPayload.id).lean();
                 if (!user) return done(null, false, { message: 'Usuario no encontrado' });
                 return done(null, user);

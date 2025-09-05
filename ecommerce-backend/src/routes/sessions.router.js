@@ -22,8 +22,7 @@ router.post('/register', async (req, res, next) => {
 
         const user = await UserModel.create({
             first_name, last_name, email, age,
-            password: createHash(password), // HASH ✅
-            // cart: null, role por defecto 'user'
+            password: createHash(password), 
         });
 
         res.status(201).json({
@@ -69,7 +68,7 @@ router.post('/login', async (req, res, next) => {
 
 // GET /api/sessions/current (valida usuario y devuelve datos del JWT)
 router.get('/current', passportJwt, async (req, res) => {
-    // req.user lo establece passport-jwt si el token es válido
+    
     const { _id, first_name, last_name, email, age, role, cart } = req.user;
     res.json({
         status: 'success',

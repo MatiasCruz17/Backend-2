@@ -26,7 +26,7 @@ router.get('/:id', passportJwt, async (req, res, next) => {
     } catch (err) { next(err); }
 });
 
-// Crear (admin) – útil para pruebas
+// Crear (admin)
 router.post('/', passportJwt, authorize('admin'), async (req, res, next) => {
     try {
         const { first_name, last_name, email, age, password, role } = req.body;
@@ -51,7 +51,7 @@ router.put('/:id', passportJwt, async (req, res, next) => {
         }
         const update = { ...req.body };
         if (update.password) {
-            update.password = createHash(update.password); // re-hash si cambia
+            update.password = createHash(update.password);
         }
         const user = await UserModel.findByIdAndUpdate(id, update, { new: true })
             .select('-password')
