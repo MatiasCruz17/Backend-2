@@ -4,7 +4,6 @@ import passport from 'passport';
 export const passportJwt = passport.authenticate('jwt', { session: false });
 
 export const authorize = (...roles) => (req, res, next) => {
-    // req.user viene de passport si el token es válido
     if (!req.user) return res.status(401).json({ status: 'error', error: 'No autenticado' });
     if (!roles.length) return next();
     if (!roles.includes(req.user.role)) {
