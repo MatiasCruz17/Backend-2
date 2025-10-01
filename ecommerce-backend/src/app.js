@@ -7,7 +7,7 @@ import './config/passport.config.js';
 import sessionsRouter from './routes/sessions.router.js';
 import usersRouter from './routes/users.router.js';
 import errorHandler from './middlewares/errorHandler.js';
-
+import productsRouter from './routes/products.router.js';
 
 const app = express();
 
@@ -19,5 +19,6 @@ app.use(passport.initialize());
 
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/products', productsRouter);
 
 app.use(errorHandler);

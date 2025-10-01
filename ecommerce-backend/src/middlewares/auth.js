@@ -1,6 +1,5 @@
 import passport from 'passport';
 
-// Valida token vía estrategia jwt de Passport
 export const passportJwt = passport.authenticate('jwt', { session: false });
 
 export const authorize = (...roles) => (req, res, next) => {
