@@ -4,47 +4,92 @@ import { passportJwt, authorize } from '../middlewares/auth.js';
 
 const router = Router();
 
-// Listar productos (todos pueden ver)
 router.get('/', async (req, res, next) => {
     try {
-        const products = await Product.find().lean();
-        res.json({ status: 'success', payload: products });
-    } catch (err) { next(err); }
+        const productos = await Product.find().lean();
+        res.json({
+            status: 'success',
+            data: productos
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
-// Obtener un producto por id
 router.get('/:id', async (req, res, next) => {
     try {
-        const prod = await Product.findById(req.params.id).lean();
-        if (!prod) return res.status(404).json({ status: 'error', error: 'Producto no encontrado' });
-        res.json({ status: 'success', payload: prod });
-    } catch (err) { next(err); }
+        const producto = await Product.findById(req.params.id).lean();
+
+        if (!producto) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'No encontramos ese producto'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            data: producto
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
-// Crear producto (solo admin)
 router.post('/', passportJwt, authorize('admin'), async (req, res, next) => {
     try {
-        const newProd = await Product.create(req.body);
-        res.status(201).json({ status: 'success', payload: newProd });
-    } catch (err) { next(err); }
+        const nuevoProducto = await Product.create(req.body);
+        res.status(201).json({
+            status: 'success',
+            data: nuevoProducto
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
-// Actualizar producto (solo admin)
 router.put('/:id', passportJwt, authorize('admin'), async (req, res, next) => {
     try {
-        const upd = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true }).lean();
-        if (!upd) return res.status(404).json({ status: 'error', error: 'Producto no encontrado' });
-        res.json({ status: 'success', payload: upd });
-    } catch (err) { next(err); }
+        const productoActualizado = await Product.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        ).lean();
+
+        if (!productoActualizado) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'No encontramos ese producto'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            data: productoActualizado
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
-// Eliminar producto (solo admin)
 router.delete('/:id', passportJwt, authorize('admin'), async (req, res, next) => {
     try {
-        const del = await Product.findByIdAndDelete(req.params.id);
-        if (!del) return res.status(404).json({ status: 'error', error: 'Producto no encontrado' });
-        res.json({ status: 'success', message: 'Producto eliminado' });
-    } catch (err) { next(err); }
+        const productoEliminado = await Product.findByIdAndDelete(req.params.id);
+
+        if (!productoEliminado) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'No encontramos ese producto'
+            });
+        }
+
+        res.json({
+            status: 'success',
+            message: 'Producto eliminado correctamente'
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
 export default router;
