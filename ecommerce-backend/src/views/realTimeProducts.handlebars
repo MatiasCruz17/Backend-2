@@ -27,11 +27,11 @@
         e.target.reset()
     })
 
-    socket.on('productosActualziados', productos => {
+    socket.on('productosActualizados', productos => {
         const lista = document.getElementById('productos')
         lista.innerHTML = ''
         productos.forEach(p => {
-            const lista = document.createElement('11')
+            const lista = document.createElement('li')
             li.textContent = `${p.title} - ${p.price}`
             lista.appendChild(li)
         })
